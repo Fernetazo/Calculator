@@ -9,6 +9,10 @@ main {
     border: 1px black solid;
 }
 
+#display {
+    width: 400px;
+    height: 35px;
+}
 .buttonsContainer {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
