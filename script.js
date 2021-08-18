@@ -31,6 +31,37 @@ function userInput(e) {
     let input = (e.keyCode || e.target.textContent);
     let type = e.target.classList[0]
 
+    // TO DO: Keep in mind the result variable
+    if (type == "modifier") {
+        if (input == ".") {
+            if (!display.textContent.includes(".")) {
+                if (num1 && !num2) {
+                    num1 = num1 + ".";
+                } else {
+                    num2 = num2 + ".";
+                }
+                display.textContent = display.textContent + ".";
+            }
+        }
+        if (input == "+/-") {
+            if (display.textContent.includes("-")) {
+                if (num1 && !num2) {
+                    num1 = num1.replace("-", "");
+                } else {
+                    num2 = num2.replace("-", "");
+                }
+                display.textContent = display.textContent.replace("-", "");
+            } else {
+                if (num1 && !num2) {
+                    num1 = "-" + num1
+                } else {
+                    num2 = "-" + num2;
+                }
+                display.textContent = "-" + display.textContent;
+            }
+        }
+    }
+
     if (type == "number") {
         if (operator == false) {
             if (num1 == null) {
@@ -51,21 +82,20 @@ function userInput(e) {
     
     if (type == "operator") {
         if (input != "=") {
-            inputtedOperation = input;
             if (num1 && num2) {
-                if (input == "+") {
+                if (inputtedOperation == "+") {
                     result = add(num1, num2);
-                } else if (input == "-") {
+                } else if (inputtedOperation == "-") {
                     result = sub(num1, num2);
-                } else if (input == "*") {
+                } else if (inputtedOperation == "*") {
                     result = multi(num1, num2);
-                } else if (input == "/") {
+                } else if (inputtedOperation == "/") {
                     result = divi(num1, num2);
-                } else if (input == "xⁿ") {
+                } else if (inputtedOperation == "xⁿ") {
                     result = pow(num1, num2);
-                } else if (input == "ⁿ√") {
+                } else if (inputtedOperation == "ⁿ√") {
                     result = root(num1, num2);
-                } else if (input == "%") {
+                } else if (inputtedOperation == "%") {
                     result = percent(num1, num2);
                 }
                 display.textContent = result;
@@ -80,6 +110,7 @@ function userInput(e) {
                 display.textContent = input;
                 operator = true;
             }
+            inputtedOperation = input;
         } else if (input == "=") {
             if (inputtedOperation == "+") {
                 result = add(num1, num2);
