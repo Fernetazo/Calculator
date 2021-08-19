@@ -27,22 +27,43 @@ let root = (a, b) => Math.pow(parseFloat(b), 1/parseFloat(a));
 
 let percent = (a, b) => ((parseFloat(b) / 100) * parseFloat(a));
 
+function operate(a, b, operation) {
+    if (operation == "+") {
+        result = add(a, b);
+    } else if (operation == "-") {
+        result = sub(a, b);
+    } else if (operation == "*") {
+        result = multi(a, b);
+    } else if (operation == "/") {
+        result = divi(a, b);
+    } else if (operation == "xⁿ") {
+        result = pow(a, b);
+    } else if (operation == "ⁿ√") {
+        result = root(a, b);
+    } else if (operation == "%") {
+        result = percent(a, b);
+    }
+    return result;
+}
+
 function userInput(e) {
     let input = (e.keyCode || e.target.textContent);
     let type = e.target.classList[0]
 
-    // TO DO: Keep in mind the result variable
-    if (type == "modifier") {
+    if (type == "modifier" && /\d/.test(display.textContent)) {
         if (input == ".") {
             if (!display.textContent.includes(".")) {
                 if (num1 && !num2) {
                     num1 = num1 + ".";
-                } else {
+                    display.textContent = display.textContent + ".";
+                } else if (num1 && num2) {
                     num2 = num2 + ".";
+                    display.textContent = display.textContent + ".";
                 }
-                display.textContent = display.textContent + ".";
             }
         }
+        
+        // TO DO: Keep in mind the result variable
         if (input == "+/-") {
             if (display.textContent.includes("-")) {
                 if (num1 && !num2) {
@@ -83,25 +104,12 @@ function userInput(e) {
     if (type == "operator") {
         if (input != "=") {
             if (num1 && num2) {
-                if (inputtedOperation == "+") {
-                    result = add(num1, num2);
-                } else if (inputtedOperation == "-") {
-                    result = sub(num1, num2);
-                } else if (inputtedOperation == "*") {
-                    result = multi(num1, num2);
-                } else if (inputtedOperation == "/") {
-                    result = divi(num1, num2);
-                } else if (inputtedOperation == "xⁿ") {
-                    result = pow(num1, num2);
-                } else if (inputtedOperation == "ⁿ√") {
-                    result = root(num1, num2);
-                } else if (inputtedOperation == "%") {
-                    result = percent(num1, num2);
-                }
+                operate (num1, num2, inputtedOperation);
                 display.textContent = result;
                 num1 = result;
                 num2 = null;
                 operator = true;
+                inputtedOperation = null;
             } else if (result && !num1) {
                 num1 = result;
                 display.textContent = input;
@@ -112,25 +120,12 @@ function userInput(e) {
             }
             inputtedOperation = input;
         } else if (input == "=") {
-            if (inputtedOperation == "+") {
-                result = add(num1, num2);
-            } else if (inputtedOperation == "-") {
-                result = sub(num1, num2);
-            } else if (inputtedOperation == "*") {
-                result = multi(num1, num2);
-            } else if (inputtedOperation == "/") {
-                result = divi(num1, num2);
-            } else if (inputtedOperation == "xⁿ") {
-                result = pow(num1, num2);
-            } else if (inputtedOperation == "ⁿ√") {
-                result = root(num1, num2);
-            } else if (inputtedOperation == "%") {
-                result = percent(num1, num2);
-            }
+            operate (num1, num2, inputtedOperation);
             display.textContent = result;
             num1 = null;
             num2 = null;
             operator = false;
+            inputtedOperation = null;
         }
     }
 }
