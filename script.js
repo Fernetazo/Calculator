@@ -1,4 +1,9 @@
-// TO DO: Upper menu buttons
+/*
+TO DO:
+    Input by keyboard
+    GUI
+    On off button?
+*/
 
 let num1 = null;
 let num2 = null;
@@ -51,8 +56,51 @@ function operate(a, b, operation) {
 function userInput(e) {
     let input = (e.keyCode || e.target.textContent);
     let type = e.target.classList[0]
+    
+    if (input == "Clear") {
+        num1 = null;
+        num2 = null;
+        operator = false;
+        display.textContent = "";
+        result = null;
+        inputtedOperation = null;
+    }
+
+    if (input == "Backspace") {
+        if (/\d/.test(display.textContent)) {
+            if (!result) {
+                if (num1 && !num2) {
+                    num1 = num1.toString().slice(0, -1);
+                }
+                if (num1 && num2) {
+                    num2 = num2.toString().slice(0, -1);
+                }
+            } else {
+                result = result.toString().slice(0, -1);
+            }
+            display.textContent = display.textContent.slice(0, -1);
+            
+            // Checks for solitary "-" because Backspacing
+            if (num1 == "-" || num2 == "-" || result == "-") {
+                display.textContent = "";
+                if (num1 == "-") num1 = null;
+                if (num2 == "-") num2 = null;
+                if (result == "-") result = null;
+            }
+        } else {
+            if (num1 && !num2) {
+                display.textContent = num1;
+                inputtedOperation = null;
+                operator = false;
+            }
+        }
+    }
 
     if (type == "modifier" && /\d/.test(display.textContent)) {
+        if (input == "Copy") {
+            navigator.clipboard.writeText(display.textContent);
+        }
+
         if (input == ".") {
             if (!display.textContent.includes(".")) {
                 if (num1 && !num2) {
@@ -89,6 +137,7 @@ function userInput(e) {
     }
 
     if (type == "number") {
+        result = null;
         if (operator == false) {
             if (num1 == null) {
                 num1 = input;
@@ -115,6 +164,7 @@ function userInput(e) {
                 num2 = null;
                 operator = true;
                 inputtedOperation = null;
+                result = null;
             } else if (result && !num1) {
                 num1 = result;
                 display.textContent = input;
