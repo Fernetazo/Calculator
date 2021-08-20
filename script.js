@@ -1,3 +1,5 @@
+// TO DO: Upper menu buttons
+
 let num1 = null;
 let num2 = null;
 let operator = false;
@@ -63,20 +65,23 @@ function userInput(e) {
             }
         }
         
-        // TO DO: Keep in mind the result variable
         if (input == "+/-") {
             if (display.textContent.includes("-")) {
                 if (num1 && !num2) {
-                    num1 = num1.replace("-", "");
-                } else {
+                    num1 = num1.toString().replace("-", "");
+                } else if (num1 && num2) {
                     num2 = num2.replace("-", "");
+                } else {
+                    result = result.toString().replace("-", "");
                 }
                 display.textContent = display.textContent.replace("-", "");
             } else {
                 if (num1 && !num2) {
                     num1 = "-" + num1
-                } else {
+                } else if (num1 && num2) {
                     num2 = "-" + num2;
+                } else {
+                    result = "-" + result;
                 }
                 display.textContent = "-" + display.textContent;
             }
@@ -120,12 +125,14 @@ function userInput(e) {
             }
             inputtedOperation = input;
         } else if (input == "=") {
-            operate (num1, num2, inputtedOperation);
-            display.textContent = result;
-            num1 = null;
-            num2 = null;
-            operator = false;
-            inputtedOperation = null;
+            if (num1 && num2) {
+                operate (num1, num2, inputtedOperation);
+                display.textContent = result;
+                num1 = null;
+                num2 = null;
+                operator = false;
+                inputtedOperation = null;
+            }
         }
     }
 }
