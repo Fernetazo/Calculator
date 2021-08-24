@@ -1,6 +1,6 @@
 /*
 TO DO:
-    Input by keyboard
+    Find bugs
     GUI
     On off button?
 */
@@ -54,8 +54,19 @@ function operate(a, b, operation) {
 }
 
 function userInput(e) {
-    let input = (e.keyCode || e.target.textContent);
-    let type = e.target.classList[0]
+
+    let key = document.querySelector(`button[data-key="${e.keyCode}"]`);
+    let input = null;
+    let type = null;
+
+    if (key) {
+        input = key.textContent;
+        type = key.classList[0];
+    } else {
+        input = e.target.textContent;
+        type = e.target.classList[0];
+    }
+
     
     if (input == "Clear") {
         num1 = null;
@@ -186,6 +197,9 @@ function userInput(e) {
         }
     }
 }
+
+// Prevent slash to bring up search bar in Firefox
+window.addEventListener('keydown', e => { if (e.code == 'NumpadDivide') e.preventDefault() });
 
 const buttons = document.querySelectorAll("button");
 buttons.forEach(button => button.addEventListener('click', buttonClicked))
