@@ -1,6 +1,7 @@
 /*
 TO DO:
     Find bugs
+        dot: round several decimals?
     GUI
     On off button?
 */
@@ -12,62 +13,44 @@ let display = document.getElementById("display");
 let result = null;
 let inputtedOperation = null;
 
-function buttonClicked(e) {
-    userInput(e);
-}
-
-function buttonPressed(e) {
-    userInput(e);
-}
-
 let add = (a, b) => parseFloat(a) + parseFloat(b);
-
 let sub = (a, b) => parseFloat(a) - parseFloat(b);
-
 let multi = (a, b) => parseFloat(a) * parseFloat(b);
-
 let divi = (a, b) => parseFloat(a) / parseFloat(b);
-
 let pow = (a, b) => Math.pow(parseFloat(a), parseFloat(b));
-
 let root = (a, b) => Math.pow(parseFloat(b), 1/parseFloat(a));
-
 let percent = (a, b) => ((parseFloat(b) / 100) * parseFloat(a));
 
 function operate(a, b, operation) {
-    if (operation == "+") {
-        result = add(a, b);
-    } else if (operation == "-") {
-        result = sub(a, b);
-    } else if (operation == "*") {
-        result = multi(a, b);
-    } else if (operation == "/") {
-        result = divi(a, b);
-    } else if (operation == "xⁿ") {
-        result = pow(a, b);
-    } else if (operation == "ⁿ√") {
-        result = root(a, b);
-    } else if (operation == "%") {
-        result = percent(a, b);
+    switch (operation) {
+        case '+': result = add(a, b); break;
+        case '-': result = sub(a, b); break;
+        case '*': result = multi(a, b); break;
+        case '/': result = divi(a, b); break;
+        case 'xⁿ': result = pow(a, b); break;
+        case 'ⁿ√': result = root(a, b); break;
+        case '%': result = percent(a, b); break;
     }
     return result;
 }
 
-function userInput(e) {
+let buttonClicked = e => {
+    input = e.target.textContent;
+    type = e.target.classList[0];
+    userInput(input, type);
+};
 
+let buttonPressed = e => {
     let key = document.querySelector(`button[data-key="${e.keyCode}"]`);
-    let input = null;
-    let type = null;
-
     if (key) {
         input = key.textContent;
         type = key.classList[0];
-    } else {
-        input = e.target.textContent;
-        type = e.target.classList[0];
+        userInput(input, type)
     }
+};
 
-    
+function userInput(input, type) {
+
     if (input == "Clear") {
         num1 = null;
         num2 = null;
@@ -180,7 +163,7 @@ function userInput(e) {
                 num1 = result;
                 display.textContent = input;
                 operator = true;
-            } else {
+            } else if (num1) {
                 display.textContent = input;
                 operator = true;
             }
@@ -198,9 +181,9 @@ function userInput(e) {
     }
 }
 
-// Prevent slash to bring up search bar in Firefox
+// Prevent slash key to bring up search bar in Firefox
 window.addEventListener('keydown', e => { if (e.code == 'NumpadDivide') e.preventDefault() });
 
 const buttons = document.querySelectorAll("button");
-buttons.forEach(button => button.addEventListener('click', buttonClicked))
+buttons.forEach(button => button.addEventListener('click', buttonClicked));
 window.addEventListener('keyup', buttonPressed);
