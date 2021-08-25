@@ -1,7 +1,5 @@
 /*
 TO DO:
-    Find bugs
-        dot: round several decimals?
     GUI
     On off button?
 */
@@ -16,7 +14,7 @@ let inputtedOperation = null;
 let add = (a, b) => parseFloat(a) + parseFloat(b);
 let sub = (a, b) => parseFloat(a) - parseFloat(b);
 let multi = (a, b) => parseFloat(a) * parseFloat(b);
-let divi = (a, b) => parseFloat(a) / parseFloat(b);
+let divi = (a, b) => {return (b == "0" ? "W͇̙̫̒͡H͕̯̖̱̑̔̄̈́͟Ȃ̴̩͙̤̱͈ͅŢ̹̻̰̗̫͇̠͍̐̂̓́ ͆҉̼͔A̛͍͎̼̭͑̇̓R͕͇̟̩̤̲͛̇͝Ȩ̞͖̟̭̹̮͔̺̊ ̼̼̥ͧͧ̊͢Y̸̗̙͎͚͉͎ͨͭȮ͚̩̳͈͙̭̼͉͆ͤ̽̀Ų̻̪̱̹̦̦͑ͦ ̌̿̏ͥ͏̹̩̟D̳̤͇̹̣̜̽ͪ̃͠Ǫ̺̘̾I̙͔̳͛̄̅͢N̨̠̱͍̼̙͍͇ͫͥͅG͍̮̪̲̪̍̎̑͗͜!͚̺̻͙́̓͒͞?͎̹̭̿̅͛͌͘" : parseFloat(a) / parseFloat(b))};
 let pow = (a, b) => Math.pow(parseFloat(a), parseFloat(b));
 let root = (a, b) => Math.pow(parseFloat(b), 1/parseFloat(a));
 let percent = (a, b) => ((parseFloat(b) / 100) * parseFloat(a));
@@ -28,10 +26,11 @@ function operate(a, b, operation) {
         case '*': result = multi(a, b); break;
         case '/': result = divi(a, b); break;
         case 'xⁿ': result = pow(a, b); break;
-        case 'ⁿ√': result = root(a, b); break;
+        case 'ⁿ√x': result = root(a, b); break;
         case '%': result = percent(a, b); break;
     }
-    return result;
+    // Prevents floating point precision problem
+    return result = parseFloat(result.toFixed(9));
 }
 
 let buttonClicked = e => {
@@ -41,7 +40,7 @@ let buttonClicked = e => {
 };
 
 let buttonPressed = e => {
-    let key = document.querySelector(`button[data-key="${e.keyCode}"]`);
+    let key = document.querySelector(`button[data-key="${e.key}"]`);
     if (key) {
         input = key.textContent;
         type = key.classList[0];
@@ -181,8 +180,12 @@ function userInput(input, type) {
     }
 }
 
-// Prevent slash key to bring up search bar in Firefox
-window.addEventListener('keydown', e => { if (e.code == 'NumpadDivide') e.preventDefault() });
+// Prevent unwanted inputs from default browser behavior
+window.addEventListener('keydown', e => { 
+    if (e.key == '/' || e.key == 'Enter' || e.code == 'Space') {
+        e.preventDefault() 
+    } 
+});
 
 const buttons = document.querySelectorAll("button");
 buttons.forEach(button => button.addEventListener('click', buttonClicked));
