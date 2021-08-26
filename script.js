@@ -1,7 +1,9 @@
 /*
 TO DO:
-    GUI
-    On off button?
+    Limit max input to display
+    Visual effect when key pressed
+    Fix visual bugs (ie root)
+    ? = Made by etc
 */
 
 let num1 = null;
@@ -16,7 +18,7 @@ let sub = (a, b) => parseFloat(a) - parseFloat(b);
 let multi = (a, b) => parseFloat(a) * parseFloat(b);
 let divi = (a, b) => {return (b == "0" ? "W͇̙̫̒͡H͕̯̖̱̑̔̄̈́͟Ȃ̴̩͙̤̱͈ͅŢ̹̻̰̗̫͇̠͍̐̂̓́ ͆҉̼͔A̛͍͎̼̭͑̇̓R͕͇̟̩̤̲͛̇͝Ȩ̞͖̟̭̹̮͔̺̊ ̼̼̥ͧͧ̊͢Y̸̗̙͎͚͉͎ͨͭȮ͚̩̳͈͙̭̼͉͆ͤ̽̀Ų̻̪̱̹̦̦͑ͦ ̌̿̏ͥ͏̹̩̟D̳̤͇̹̣̜̽ͪ̃͠Ǫ̺̘̾I̙͔̳͛̄̅͢N̨̠̱͍̼̙͍͇ͫͥͅG͍̮̪̲̪̍̎̑͗͜!͚̺̻͙́̓͒͞?͎̹̭̿̅͛͌͘" : parseFloat(a) / parseFloat(b))};
 let pow = (a, b) => Math.pow(parseFloat(a), parseFloat(b));
-let root = (a, b) => Math.pow(parseFloat(b), 1/parseFloat(a));
+let root = (a, b) => Math.pow(parseFloat(b), 1 / parseFloat(a));
 let percent = (a, b) => ((parseFloat(b) / 100) * parseFloat(a));
 
 function operate(a, b, operation) {
@@ -24,7 +26,7 @@ function operate(a, b, operation) {
         case '+': result = add(a, b); break;
         case '-': result = sub(a, b); break;
         case '*': result = multi(a, b); break;
-        case '/': result = divi(a, b); break;
+        case '÷': result = divi(a, b); break;
         case 'xⁿ': result = pow(a, b); break;
         case 'ⁿ√x': result = root(a, b); break;
         case '%': result = percent(a, b); break;
@@ -49,8 +51,7 @@ let buttonPressed = e => {
 };
 
 function userInput(input, type) {
-
-    if (input == "Clear") {
+    if (input == "C") {
         num1 = null;
         num2 = null;
         operator = false;
@@ -59,7 +60,7 @@ function userInput(input, type) {
         inputtedOperation = null;
     }
 
-    if (input == "Backspace") {
+    if (input == "DEL") {
         if (/\d/.test(display.textContent)) {
             if (!result) {
                 if (num1 && !num2) {
